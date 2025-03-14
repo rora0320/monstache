@@ -2,6 +2,8 @@
 
   services:
 
+# docker exec -it mongodb-1-test mongosh 로 접속 후 레플리카셋 초기화 & hosts 설정 추가하기
+# rs.initiate({  _id: "rs0", members: [ { _id: 0, host:"mongodb-1-test:27017"}, { _id: 1, host:"mongodb-2-test:27018"}, { _id: 2, host:"mongodb-3-test:27019"}]})
     mongodb-1:
       image: mongo:latest
       container_name: mongodb-1-test
