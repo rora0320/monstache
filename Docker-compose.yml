@@ -1,0 +1,44 @@
+  version: '3.9'
+
+  services:
+
+    mongodb-1:
+      image: mongo:latest
+      container_name: mongodb-1-test
+      ports:
+      - "27017:27017"
+      volumes:
+        - ./docker-share-data/mongodb-1-data:/data/db
+        - ./conf/mongod.conf:/etc/mongod.conf
+      command: [ "mongod", "--replSet", "rs0", "--port" , "27017","--bind_ip_all"]
+      networks:
+        - kh-net
+
+    mongodb-2: #서비스 이름
+      image: mongo:latest
+      container_name: mongodb-2-test
+      ports:
+        - "27018:27018"
+      volumes:
+        - ./docker-share-data/mongodb-2-data:/data/db
+        - ./conf/mongod2.conf:/etc/mongod.conf
+      command: [ "mongod", "--replSet", "rs0", "--bind_ip_all",  "--port" , "27018"]
+      networks:
+        - kh-net
+
+    mongodb-3:
+      image: mongo:latest
+      container_name: mongodb-3-test
+      ports:
+        - "27019:27019"
+      volumes:
+        - ./docker-share-data/mongodb-3-data:/data/db
+        - ./conf/mongod3.conf:/etc/mongod.conf
+      command: [ "mongod", "--replSet", "rs0", "--bind_ip_all", "--port" , "27019",]
+      networks:
+        - kh-net
+
+  networks:
+    kh-net:
+      driver: bridge
+#      external: true
