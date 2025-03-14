@@ -40,6 +40,37 @@
       networks:
         - kh-net
 
+    elasticsearch:
+      image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+      container_name: elasticsearch-test
+      environment:
+        - xpack.security.enabled=false
+        - discovery.type=single-node
+        - bootstrap.memory_lock=true
+        - ES_JAVA_OPTS=-Xms1024m -Xmx1024m
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+      volumes:
+        - ./docker-share-data/es-data:/usr/share/elasticsearch/data
+      ports:
+        - "9200:9200"
+      networks:
+        - kh-net
+
+    kibana:
+      image: docker.elastic.co/kibana/kibana:8.6.0
+      container_name: kibana_lecture-test
+      ports:
+        - "5601:5601"
+      environment:
+        - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      networks:
+        - kh-net
+      depends_on:
+        - elasticsearch
+
   networks:
     kh-net:
       driver: bridge
